@@ -3,15 +3,20 @@ import pytest
 
 
 def removeDuplicatesII(nums: List[int]) -> int:
-    i = 2
-    k = len(nums) - 1
-    while i <= k:
-        if nums[i] == nums[i - 1] and nums[i] == nums[i - 2]:
-            nums[i:] = nums[i + 1 :] + [nums[i]]
-            k -= 1
+    j = 1
+    count = 1
+
+    for i in range(1, len(nums)):
+        if nums[i] == nums[i - 1]:
+            count += 1
         else:
-            i += 1
-    return i
+            count = 1
+
+        if count <= 2:
+            nums[j] = nums[i]
+            j += 1
+
+    return j
 
 
 @pytest.mark.parametrize(
