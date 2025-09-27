@@ -4,10 +4,11 @@ import pytest
 
 def maxProfit(prices: List[int]) -> int:
     profit = 0
-    for i, price in enumerate(prices):
-        maxPrice = max(prices[i:])
-        if maxPrice > price:
-            profit = max(profit, maxPrice - price)
+
+    maxLookup = {}
+    for j in range(len(prices) - 1, 0, -1):
+        maxLookup[j] = max(maxLookup.get(j + 1, prices[j]), prices[j])
+        profit = max(profit, maxLookup[j] - prices[j - 1])
 
     return profit
 
