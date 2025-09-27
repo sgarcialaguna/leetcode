@@ -3,14 +3,14 @@ import pytest
 
 
 def maxProfit(prices: List[int]) -> int:
-    profit = 0
+    max_profit = 0
+    min_price = prices[0]
 
-    maxVal = prices[len(prices) - 1]
-    for j in range(len(prices) - 1, 0, -1):
-        maxVal = max(maxVal, prices[j])
-        profit = max(profit, maxVal - prices[j - 1])
+    for price in prices:
+        min_price = min(price, min_price)
+        max_profit = max(price - min_price, max_profit)
 
-    return profit
+    return max_profit
 
 
 @pytest.mark.parametrize(
