@@ -3,29 +3,14 @@ from typing import List
 import pytest
 
 
-def canJumpPastIndex(nums: List[int], i: int):
-    for j in range(i - 1, -1, -1):
-        if j + nums[j] > i or j + nums[j] >= len(nums) - 1:
-            return True
-
-    return False
-
-
 def canJump(nums: List[int]):
-    if 0 not in nums:
-        return True
+    n = len(nums)
+    goal = n - 1
+    for i in range(n - 1, -1, -1):
+        if i + nums[i] >= goal:
+            goal = i
 
-    if nums == [0]:
-        return True
-
-    for i in range(len(nums) - 1, -1, -1):
-        if nums[i] > 0:
-            continue
-
-        if not canJumpPastIndex(nums, i):
-            return False
-
-    return True
+    return goal == 0
 
 
 @pytest.mark.parametrize(
