@@ -5,20 +5,18 @@ import pytest
 
 
 def canJump(nums: List[int]):
-    reachable_positions = {}
-    for i, num in enumerate(nums):
-        for j in range(i + 1, min(i + num + 1, len(nums))):
-            if j in reachable_positions:
-                continue
-            reachable_positions[j] = i
+    # See https://www.youtube.com/watch?v=CsDI-yQuGeM
+    smallest = 0
+    n = len(nums)
+    end, far = 0, 0
 
-    i = len(nums) - 1
-    jumps = 0
-    while i > 0:
-        jumps += 1
-        i = reachable_positions[i]
+    for i in range(n - 1):
+        far = max(far, i + nums[i])
+        if i == end:
+            smallest += 1
+            end = far
 
-    return jumps
+    return smallest
 
 
 @pytest.mark.parametrize(
