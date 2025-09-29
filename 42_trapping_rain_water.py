@@ -1,40 +1,22 @@
 import pytest
 
 
-def find_next_index(height: list[int], i: int) -> int:
-    max_index = -1
-    for j in range(i + 1, len(height)):
-        if height[j] >= height[i]:
-            return j
-        if height[j] >= height[max_index]:
-            max_index = j
-
-    return max_index
-
-
-def is_strictly_increasing(l: list[int]):
-    return all(x < y for x, y in zip(l, l[1:]))
-
-
-def is_strictly_decreasing(l: list[int]):
-    return all(x > y for x, y in zip(l, l[1:]))
-
-
 def trap(height: list[int]) -> int:
-    if is_strictly_decreasing(height) or is_strictly_increasing(height):
-        return 0
-
     trapped = 0
     i = 0
 
-    while i < len(height):
-        j = find_next_index(height, i)
-        if j == -1:
-            i += 1
-            continue
-        for k in range(i, j):
-            trapped += max(0, min(height[i], height[j]) - height[k])
-        i = j
+    maxLeft = [0] * len(height)
+    for i in range(1, len(height)):
+        maxLeft[i] = max(maxLeft[i - 1], height[i - 1])
+
+    maxRight = [0] * len(height)
+    for i in range(len(height) - 2, -1, -1):
+        maxRight[i] = max(maxRight[i + 1], height[i + 1])
+
+    minLeftRight = [min(maxLeft[i], maxRight[i]) for i in range(len(height))]
+
+    for i in range(len(height)):
+        trapped += max(0, minLeftRight[i] - height[i])
 
     return trapped
 
