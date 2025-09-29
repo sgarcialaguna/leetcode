@@ -17,7 +17,7 @@ lookup = {
 }
 
 
-def romanToInteger(roman: str):
+def romanToInteger(roman: str) -> int:
     result = 0
     i = 0
     while i < len(roman):
