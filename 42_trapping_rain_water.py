@@ -21,6 +21,28 @@ def trap(height: list[int]) -> int:
     return trapped
 
 
+def trap_two_pointers(height: list[int]) -> int:
+    # Taken from https://youtu.be/ZI2z5pq0TqA
+    if not height:
+        return 0
+
+    l, r = 0, len(height) - 1
+    leftMax, rightMax = height[l], height[r]
+    res = 0
+
+    while l < r:
+        if leftMax <= rightMax:
+            l += 1
+            leftMax = max(leftMax, height[l])
+            res += leftMax - height[l]
+        else:
+            r -= 1
+            rightMax = max(rightMax, height[r])
+            res += rightMax - height[r]
+
+    return res
+
+
 @pytest.mark.parametrize(
     "height, expected",
     [
@@ -33,3 +55,4 @@ def trap(height: list[int]) -> int:
 )
 def test_trap(height: list[int], expected: int):
     assert trap(height) == expected
+    assert trap_two_pointers(height) == expected
