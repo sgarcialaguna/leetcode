@@ -44,6 +44,23 @@ def convert(s: str, numRows: int) -> str:
     return result
 
 
+def better_convert(s: str, numRows: int) -> str:
+    # See https://www.youtube.com/watch?v=Q2Tw6gcVEwc
+    if numRows == 1:
+        return s
+
+    result = ""
+    for row in range(numRows):
+        increment = (numRows - 1) * 2
+        for i in range(row, len(s), increment):
+            result += s[i]
+            # Not first or last row
+            if 0 < row < numRows - 1 and i + increment - 2 * row < len(s):
+                result += s[i + increment - 2 * row]
+
+    return result
+
+
 @pytest.mark.parametrize(
     "s, numRows, expected",
     [
@@ -89,3 +106,4 @@ def test_convertToMatrix(s, numRows, expected):
 )
 def test_convert(s, numRows, expected):
     assert convert(s, numRows) == expected
+    assert better_convert(s, numRows) == expected
