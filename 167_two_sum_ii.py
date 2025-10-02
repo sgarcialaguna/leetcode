@@ -1,3 +1,4 @@
+from logging import raiseExceptions
 from typing import Optional
 import pytest
 
@@ -23,7 +24,7 @@ def binary_search(
     return -1
 
 
-def twoSum(nums: list[int], target: int) -> list[int]:
+def twoSum_binarysearch(nums: list[int], target: int) -> list[int]:
     for idx, num in enumerate(nums):
         lo = None
         target2 = target - num
@@ -38,6 +39,21 @@ def twoSum(nums: list[int], target: int) -> list[int]:
     raise Exception("OH NOES")
 
 
+def twoSum_twoPointers(nums: list[int], target: int) -> list[int]:
+    lo = 0
+    hi = len(nums) - 1
+
+    while lo < hi:
+        if nums[lo] + nums[hi] > target:
+            hi -= 1
+        elif nums[lo] + nums[hi] < target:
+            lo += 1
+        else:
+            return [lo + 1, hi + 1]
+
+    raise Exception("OH NOES")
+
+
 @pytest.mark.parametrize(
     "nums, target, expected",
     [
@@ -48,4 +64,5 @@ def twoSum(nums: list[int], target: int) -> list[int]:
     ],
 )
 def test_twoSum(nums: list[int], target: int, expected: list[int]):
-    assert twoSum(nums, target) == expected
+    # assert twoSum_binarysearch(nums, target) == expected
+    assert twoSum_twoPointers(nums, target) == expected
