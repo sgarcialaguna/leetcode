@@ -1,12 +1,14 @@
-from itertools import combinations
 import pytest
 
 
 def twoSum(nums: list[int], target: int) -> list[int]:
-    c = combinations(range(len(nums)), 2)
-    for [first_idx, second_idx] in c:
-        if nums[first_idx] + nums[second_idx] == target:
-            return [first_idx, second_idx]
+    lookup = {}
+    for i, num in enumerate(nums):
+        lookup[num] = i
+
+    for idx, num in enumerate(nums):
+        if target - num in lookup and lookup[target - num] != idx:
+            return [idx, lookup[target - num]]
 
     raise Exception("OH NOES")
 
