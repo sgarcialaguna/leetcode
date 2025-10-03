@@ -1,4 +1,3 @@
-import itertools
 import pytest
 
 
@@ -8,8 +7,14 @@ def area(height: list[int], start: int, end: int) -> int:
 
 def maxArea(height: list[int]):
     result = 0
-    for start, end in itertools.combinations(range(len(height)), 2):
-        result = max(result, area(height, start, end))
+    left = 0
+    right = len(height) - 1
+    while left < right:
+        result = max(area(height, left, right), result)
+        if height[left] < height[right]:
+            left += 1
+        else:
+            right -= 1
 
     return result
 
