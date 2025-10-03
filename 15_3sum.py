@@ -32,13 +32,10 @@ def threeSum(nums: list[int]) -> list[list[int]]:
                 result.append([val, nums[lo], nums[hi]])
 
                 # Do not reuse the same numbers
-                oldLo = nums[lo]
-                oldHi = nums[hi]
-
-                while lo < hi and nums[lo] == oldLo:
+                lo, hi = lo + 1, hi - 1
+                while lo < hi and nums[lo] == nums[lo - 1]:
                     lo += 1
-
-                while lo < hi and nums[hi] == oldHi:
+                while lo < hi and nums[hi] == nums[hi + 1]:
                     hi -= 1
 
     return result
