@@ -10,6 +10,10 @@ def threeSum(nums: list[int]) -> list[list[int]]:
     result = []
     nums = sorted(nums)
     for i in range(len(nums) - 2):
+        if nums[i] > 0:
+            # sorted array, we already have positive numbers
+            break
+
         # Do not reuse the same numbers
         if i > 0 and nums[i - 1] == nums[i]:
             continue
