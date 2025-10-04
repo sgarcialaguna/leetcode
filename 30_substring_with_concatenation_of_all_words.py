@@ -1,32 +1,35 @@
-from collections import Counter
+from collections import Counter, defaultdict
 import pytest
 
 
-def isValidStartingPoint(s: str, words: list[str], start: int):
-    word_counter = Counter(words)
-    word_length = len(words[0])
-    for i in range(start, min(len(s), start + len(words) * word_length), word_length):
-        word = s[i : i + word_length]
-        try:
-            word_counter[word] = word_counter[word] - 1
-            if not word_counter[word]:
-                del word_counter[word]
-        except KeyError:
-            return False
-
-    return len(word_counter) == 0
-
-
 def findSubstring(s: str, words: list[str]) -> list[int]:
+    word_length = len(words[0])
     result = []
-    l, r = 0, len(words[0])
+    word_count = Counter(words)
 
-    while r <= len(s):
-        if s[l:r] in words:
-            if isValidStartingPoint(s, words, l):
-                result.append(l)
-        l += 1
-        r += 1
+    for i in range(word_length):
+        left = i
+        sub_count = defaultdict(int)
+        count = 0
+
+        for j in range(i, len(s) - word_length + 1, word_length):
+            sub_word = s[j : j + word_length]
+
+            if sub_word in word_count:
+                sub_count[sub_word] += 1
+                count += 1
+
+                while sub_count[sub_word] > word_count[sub_word]:
+                    sub_count[s[left : left + word_length]] -= 1
+                    count -= 1
+                    left += word_length
+
+                if count == len(words):
+                    result.append(left)
+            else:
+                sub_count.clear()
+                count = 0
+                left = j + word_length
 
     return result
 
