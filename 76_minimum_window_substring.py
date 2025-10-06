@@ -27,31 +27,22 @@ def minWindow(s: str, t: str) -> str:
             for i in range(start, end):
                 char = s[i]
 
-                # if character is not in t, we don't care
-                if char not in t:
-                    start += 1
-                    result = (
-                        result
-                        if len(result) < len(s[start : end + 1])
-                        else s[start : end + 1]
-                    )
+                # We can not remove this character, so break
+                if char in t and counter[char] >= 0:
+                    break
 
-                    continue
+                # if character is not in t, we can remove it
 
                 # if we have duplicate characters, the counter will be below 0, we can advance
                 if counter[char] < 0:
-                    start += 1
                     counter[char] += 1
-                    result = (
-                        result
-                        if len(result) < len(s[start : end + 1])
-                        else s[start : end + 1]
-                    )
 
-                    continue
-
-                # We can not remove this character, so break
-                break
+                start += 1
+                result = (
+                    result
+                    if len(result) < len(s[start : end + 1])
+                    else s[start : end + 1]
+                )
 
     return result
 
