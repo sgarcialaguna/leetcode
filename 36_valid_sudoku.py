@@ -1,64 +1,37 @@
+from collections import defaultdict
 import pytest
 
 LENGTH = 9
 
 
-def checkRow(board: list[list[str]], row: int) -> bool:
-    lookup = set()
-    for number in board[row]:
-        if number == ".":
-            continue
-
-        if number in lookup:
-            return False
-
-        lookup.add(number)
-
-    return True
-
-
-def checkColumn(board: list[list[str]], col: int) -> bool:
-    lookup = set()
+def createLookup(board):
+    lookup = defaultdict(list[tuple[int, int]])
     for i in range(LENGTH):
-        number = board[i][col]
-        if number == ".":
-            continue
-
-        if number in lookup:
-            return False
-
-        lookup.add(number)
-
-    return True
-
-
-def checkSubboard(board: list[list[str]], index: int) -> bool:
-    lookup = set()
-    first_row = (index // 3) * 3
-    first_col = 3 * (index % 3)
-
-    for i in range(3):
-        for j in range(3):
-            number = board[first_row + i][first_col + j]
-            if number == ".":
-                continue
-
-            if number in lookup:
-                return False
-
-            lookup.add(number)
-
-    return True
+        for j in range(LENGTH):
+            if board[i][j] != ".":
+                lookup[int(board[i][j])].append((i, j))
+    return lookup
 
 
 def isValidSudoku(board: list[list[str]]) -> bool:
-    for i in range(LENGTH):
-        if not checkRow(board, i):
-            return False
-        if not checkColumn(board, i):
-            return False
-        if not checkSubboard(board, i):
-            return False
+    lookup = createLookup(board)
+
+    for i in range(10):
+        rowLookup = set()
+        colLookup = set()
+        subboardLookup = set()
+
+        for row, col in lookup[i]:
+            if i not in lookup:
+                continue
+
+            subboard = (row // 3) * 3 + col // 3
+            if row in rowLookup or col in colLookup or subboard in subboardLookup:
+                return False
+
+            rowLookup.add(row)
+            colLookup.add(col)
+            subboardLookup.add(subboard)
 
     return True
 
@@ -107,6 +80,20 @@ def isValidSudoku(board: list[list[str]]) -> bool:
                 [".", ".", ".", ".", "7", ".", ".", ".", "."],
             ],
             True,
+        ),
+        (
+            [
+                [".", ".", ".", ".", ".", "3", ".", ".", "."],
+                ["8", ".", ".", ".", ".", "5", ".", "1", "."],
+                [".", ".", ".", ".", "7", ".", ".", ".", "3"],
+                [".", ".", ".", ".", ".", ".", ".", ".", "."],
+                [".", "5", "9", "7", ".", ".", ".", "9", "."],
+                ["7", ".", ".", ".", ".", ".", ".", ".", "."],
+                [".", "6", ".", ".", ".", ".", "2", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", "7", ".", "."],
+            ],
+            False,
         ),
     ],
 )
