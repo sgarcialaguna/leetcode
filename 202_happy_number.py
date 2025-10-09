@@ -22,7 +22,7 @@ def isHappy(n: int) -> bool:
         if nextNumber == 1:
             return True
 
-        key = "".join(sorted(str(nextNumber)))
+        key = "".join(sorted(str(nextNumber))).replace("0", "")
         if key in seenNumbers:
             return False
         seenNumbers.add(key)
