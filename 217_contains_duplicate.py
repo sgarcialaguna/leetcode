@@ -3,10 +3,16 @@ import pytest
 
 def containsDuplicate(nums: list[int]) -> bool:
     """Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct."""
-    if not nums:
-        return False
 
-    return len(set(nums)) != len(nums)
+    # Using a dict here results in an even faster running time on Leetcode. Not sure why, time complexity should be the same.
+    # Using a set for simplicity, we don't really need values
+    seen = set()
+    for num in nums:
+        if num in seen:
+            return True
+        seen.add(num)
+
+    return False
 
 
 @pytest.mark.parametrize(
