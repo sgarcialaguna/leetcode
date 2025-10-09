@@ -10,27 +10,17 @@ def longestConsecutive(nums: list[int]) -> int:
         return 0
 
     nums_set = set(nums)
-    seen = set()
     result = 1
 
-    for num in nums:
-        seen.add(num)
-        L, R = num, num
+    for num in nums_set:
+        curr = num
         sequence_length = 1
 
-        while L - 1 in nums_set:
-            L = L - 1
-            if L in seen:
-                break
-            seen.add(L)
-            sequence_length += 1
-            result = max(result, sequence_length)
+        if curr - 1 in nums_set:
+            continue
 
-        while R + 1 in nums_set:
-            R = R + 1
-            if R in seen:
-                break
-            seen.add(R)
+        while curr + 1 in nums_set:
+            curr += 1
             sequence_length += 1
             result = max(result, sequence_length)
 
