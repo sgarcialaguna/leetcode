@@ -21,9 +21,11 @@ def isHappy(n: int) -> bool:
             curr = curr // 10
         if nextNumber == 1:
             return True
-        if nextNumber in seenNumbers:
+
+        key = "".join(sorted(str(nextNumber)))
+        if key in seenNumbers:
             return False
-        seenNumbers.add(nextNumber)
+        seenNumbers.add(key)
         curr = nextNumber
 
 
