@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import Counter, defaultdict
 import pytest
 
 
@@ -18,6 +18,24 @@ def containsNearbyDuplicate(nums: list[int], k: int) -> bool:
     return False
 
 
+def containsNearbyDuplicateSlidingWindow(nums: list[int], k: int) -> bool:
+    # See https://www.youtube.com/watch?v=ypn0aZ0nrL4
+    window = set()
+    L = 0
+
+    for R in range(len(nums)):
+        if R - L > k:
+            window.remove(nums[L])
+            L += 1
+
+        if nums[R] in window:
+            return True
+
+        window.add(nums[R])
+
+    return False
+
+
 @pytest.mark.parametrize(
     "nums, k, expected",
     [
@@ -30,3 +48,4 @@ def containsNearbyDuplicate(nums: list[int], k: int) -> bool:
 )
 def test_containsNearbyDuplicate(nums, k, expected):
     assert containsNearbyDuplicate(nums, k) is expected
+    assert containsNearbyDuplicateSlidingWindow(nums, k) is expected
