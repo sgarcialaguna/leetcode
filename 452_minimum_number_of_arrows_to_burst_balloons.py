@@ -26,15 +26,15 @@ def findMinArrowShots(points: list[list[int]]) -> int:
     # Basic idea: Start with result equal to the number of balloons. Sort the list of points by starting points
     # Find how many ranges overlap. For each overlap, subtract one
 
-    sortedPoints = sorted(points, key=itemgetter(0))
+    points.sort()
     result = len(points)
     left, right = 0, 1
-    currentRange = sortedPoints[left]
-    while right < len(sortedPoints):
+    currentRange = points[left]
+    while right < len(points):
         # Find the minimum overlap covering all points so far
         overlap = [
-            max(currentRange[0], sortedPoints[right][0]),
-            min(currentRange[1], sortedPoints[right][1]),
+            max(currentRange[0], points[right][0]),
+            min(currentRange[1], points[right][1]),
         ]
         # While endpoint >= startpoint, we still have an overlap
         if overlap[1] - overlap[0] >= 0:
@@ -44,7 +44,7 @@ def findMinArrowShots(points: list[list[int]]) -> int:
         else:
             left = right
             right = left + 1
-            currentRange = sortedPoints[left]
+            currentRange = points[left]
 
     return result
 
